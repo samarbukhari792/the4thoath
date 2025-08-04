@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 4th Oath</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Space+Mono:wght@400;700&display=swap');
+        
+        :root {
+            --blood-red: #8B0000;
+            --deep-violet: #2D1B69;
+            --dark-bg: #000000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: #E0E0E0;
+            font-family: 'Space Mono', monospace;
+            overflow-x: hidden;
+        }
+        
+        .cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            animation: glitch 3s infinite;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            animation: glitch-1 0.5s infinite;
+            color: var(--blood-red);
+            z-index: -1;
+        }
+        
+        .glitch::after {
+            animation: glitch-2 0.5s infinite;
+            color: var(--deep-violet);
+            z-index: -2;
+        }
+        
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow: 0.05em 0 0 rgba(139, 0, 0, 0.75),
+                            -0.025em -0.05em 0 rgba(45, 27, 105, 0.75),
+                            0.025em 0.05em 0 rgba(139, 0, 0, 0.75);
+            }
+            15% {
+                text-shadow: -0.05em -0.025em 0 rgba(139, 0, 0, 0.75),
+                            0.025em 0.025em 0 rgba(45, 27, 105, 0.75),
+                            -0.05em -0.05em 0 rgba(139, 0, 0, 0.75);
+            }
+            50% {
+                text-shadow: 0.025em 0.05em 0 rgba(139, 0, 0, 0.75),
+                            0.05em 0 0 rgba(45, 27, 105, 0.75),
+                            0 -0.05em 0 rgba(139, 0, 0, 0.75);
+            }
+        }
+        
+        @keyframes glitch-1 {
+            0%, 100% {
+                clip-path: inset(0 0 0 0);
+                transform: translate(0);
+            }
+            20% {
+                clip-path: inset(20% 0 30% 0);
+                transform: translate(-5px);
+            }
+            40% {
+                clip-path: inset(50% 0 20% 0);
+                transform: translate(5px);
+            }
+            60% {
+                clip-path: inset(10% 0 60% 0);
+                transform: translate(3px);
+            }
+            80% {
+                clip-path: inset(80% 0 5% 0);
+                transform: translate(-3px);
+            }
+        }
+        
+        @keyframes glitch-2 {
+            0%, 100% {
+                clip-path: inset(0 0 0 0);
+                transform: translate(0);
+            }
+            20% {
+                clip-path: inset(60% 0 10% 0);
+                transform: translate(5px);
+            }
+            40% {
+                clip-path: inset(20% 0 50% 0);
+                transform: translate(-5px);
+            }
+            60% {
+                clip-path: inset(30% 0 40% 0);
+                transform: translate(-3px);
+            }
+            80% {
+                clip-path: inset(5% 0 80% 0);
+                transform: translate(3px);
+            }
+        }
+        
+        /* Typewriter Effect */
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--blood-red); }
+        }
+        
+        /* Fade In Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Button Styles */
+        .oath-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .oath-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: rgba(139, 0, 0, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .oath-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* Hologram Effect */
+        .hologram {
+            position: relative;
+            animation: hologram-flicker 4s infinite alternate;
+        }
+        
+        @keyframes hologram-flicker {
+            0%, 100% {
+                opacity: 1;
+                text-shadow: 0 0 10px rgba(139, 0, 0, 0.8),
+                            0 0 20px rgba(139, 0, 0, 0.6),
+                            0 0 30px rgba(139, 0, 0, 0.4);
+            }
+            25% {
+                opacity: 0.9;
+                text-shadow: 0 0 5px rgba(139, 0, 0, 0.8),
+                            0 0 10px rgba(139, 0, 0, 0.6),
+                            0 0 15px rgba(139, 0, 0, 0.4);
+            }
+            50% {
+                opacity: 0.85;
+                text-shadow: 0 0 8px rgba(45, 27, 105, 0.8),
+                            0 0 16px rgba(45, 27, 105, 0.6),
+                            0 0 24px rgba(45, 27, 105, 0.4);
+            }
+            75% {
+                opacity: 0.95;
+                text-shadow: 0 0 12px rgba(139, 0, 0, 0.8),
+                            0 0 24px rgba(139, 0, 0, 0.6),
+                            0 0 36px rgba(139, 0, 0, 0.4);
+            }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--blood-red);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #A52A2A;
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-out;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Countdown Timer */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .countdown-item {
+            text-align: center;
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 0.25rem;
+            padding: 0.75rem;
+            min-width: 3.5rem;
+        }
+        
+        .countdown-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--blood-red);
+        }
+        
+        .countdown-label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+        
+        /* Silhouette Image */
+        .silhouette {
+            filter: brightness(0) invert(0.1) contrast(1.5);
+            mix-blend-mode: screen;
+        }
+        
+        /* Project Card */
+        .project-card {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.05) 0%, rgba(45, 27, 105, 0.05) 100%);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            border-color: var(--blood-red);
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="text-center">
+            <div class="typewriter cinzel text-2xl text-red-800">Initializing...</div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center justify-center relative">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-10 left-10 opacity-10">
+                <i class="fas fa-eye text-6xl text-red-800"></i>
+            </div>
+            <div class="absolute bottom-20 right-20 opacity-10">
+                <i class="fas fa-dragon text-8xl text-violet-800"></i>
+            </div>
+            <div class="absolute top-1/2 left-1/4 opacity-10">
+                <i class="fas fa-infinity text-5xl text-gray-700"></i>
+            </div>
+        </div>
+        
+        <div class="text-center z-10 px-6 max-w-2xl">
+            <h1 class="glitch cinzel text-4xl md:text-6xl mb-6" data-text="The 4th Oath">The 4th Oath</h1>
+            <p class="text-xl md:text-2xl text-gray-400 mb-8">Legacy is born in shadows.</p>
+            <div class="typewriter text-lg md:text-xl text-red-800 mb-10">Silence. Power. Control. Coin.</div>
+            <button onclick="scrollToSection('coming-soon')" class="oath-button px-8 py-3 border-2 border-red-800 text-red-800 hover:bg-red-800 hover:text-black transition-all duration-300">
+                Enter
+            </button>
+        </div>
+    </section>
+
+    <!-- Coming Soon Section -->
+    <section id="coming-soon" class="min-h-screen py-20 px-6 flex items-center">
+        <div class="container mx-auto max-w-2xl text-center">
+            <h2 class="cinzel text-3xl md:text-4xl mb-8 fade-in hologram">The system is forging.</h2>
+            <p class="text-xl md:text-2xl text-gray-300 mb-4 fade-in">Watch the world change.</p>
+            <p class="text-lg text-gray-500 mb-8 fade-in">Public access will be... restricted.</p>
+            
+            <div class="fade-in">
+                <div class="countdown">
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="days">00</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="hours">00</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="minutes">00</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="seconds">00</div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 fade-in">
+                <p class="text-gray-600 italic">"In tenebris potentia nascitur"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Preview Section -->
+    <section id="project" class="min-h-screen py-20 px-6 flex items-center">
+        <div class="container mx-auto max-w-2xl">
+            <div class="project-card rounded-lg p-8 fade-in">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-red-800 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cube text-xl"></i>
+                    </div>
+                    <h3 class="text-2xl ml-4 cinzel">Tapium Protocol</h3>
+                </div>
+                
+                <blockquote class="text-lg md:text-xl text-gray-300 mb-8 border-l-4 border-red-800 pl-4 italic">
+                    "The coin revolution. Built in the shadows."
+                </blockquote>
+                
+                <p class="text-gray-400 mb-8">
+                    A revolutionary decentralized protocol that will reshape the financial landscape. 
+                    Currently in final development stages with limited access.
+                </p>
+                
+                <a href="https://tapiumofficial.netlify.app" target="_blank" class="oath-button inline-block px-6 py-3 bg-red-800 text-black hover:bg-red-700 transition-all duration-300">
+                    Visit Tapium <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder Section -->
+    <section id="founder" class="min-h-screen py-20 px-6 flex items-center">
+        <div class="container mx-auto max-w-2xl">
+            <div class="text-center fade-in">
+                <div class="mx-auto w-32 h-32 rounded-full overflow-hidden mb-6 border-2 border-red-800">
+                    <img src="https://i.ibb.co/k2QZnXxZ/1746282429477.jpg" alt="Founder" class="silhouette w-full h-full object-cover">
+                </div>
+                
+                <h3 class="cinzel text-3xl mb-2">Sayyed Bukhari</h3>
+                <p class="text-xl text-red-800 mb-8">Founder ⚔️ The 4th Oath</p>
+                
+                <div class="bg-black bg-opacity-50 p-6 rounded-lg border border-gray-800">
+                    <p class="text-gray-400 italic">
+                        "Some build empires in the light. We build systems in the shadows. 
+                        The difference is permanence."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="min-h-screen py-20 px-6 flex items-center">
+        <div class="container mx-auto max-w-2xl text-center">
+            <h2 class="cinzel text-3xl md:text-4xl mb-8 fade-in">If you know, you know.</h2>
+            
+            <div class="fade-in">
+                <p class="text-gray-400 mb-8">
+                    The doors are not open to all. Only those who understand the language of systems 
+                    and the value of silence will find their way in.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="mailto:contact@the4thoath.org" class="oath-button px-6 py-3 border-2 border-red-800 text-red-800 hover:bg-red-800 hover:text-black transition-all duration-300">
+                        <i class="fas fa-envelope mr-2"></i> Secure Channel
+                    </a>
+                    <a href="https://t.me/the4thoath" target="_blank" class="oath-button px-6 py-3 border-2 border-violet-800 text-violet-800 hover:bg-violet-800 hover:text-black transition-all duration-300">
+                        <i class="fab fa-telegram mr-2"></i> Telegram
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-12 fade-in">
+                <p class="text-gray-600 italic text-sm">
+                    "Not all who seek will find. Not all who find will enter."
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-6 border-t border-gray-900">
+        <div class="container mx-auto text-center">
+            <p class="text-gray-500 mb-2">
+                Built in Silence. Forged in Fire.
+            </p>
+            <p class="text-gray-700 text-sm">
+                © 2025 The 4th Oath. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 2000);
+        });
+
+        // Smooth Scrolling
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Fade In Animation on Scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Countdown Timer (set to 30 days from now for demo)
+        function updateCountdown() {
+            const countdownDate = new Date();
+            countdownDate.setDate(countdownDate.getDate() + 30);
+            
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+
+        // Add glitch effect on hover for project card
+        const projectCard = document.querySelector('.project-card');
+        projectCard.addEventListener('mouseenter', () => {
+            projectCard.style.animation = 'glitch-hover 0.3s infinite';
+        });
+        
+        projectCard.addEventListener('mouseleave', () => {
+            projectCard.style.animation = '';
+        });
+
+        // Typewriter effect for quotes
+        const quotes = document.querySelectorAll('blockquote');
+        quotes.forEach((quote, index) => {
+            quote.style.opacity = '0';
+            setTimeout(() => {
+                quote.style.transition = 'opacity 2s ease-in';
+                quote.style.opacity = '1';
+            }, 1000 * (index + 1));
+        });
+    </script>
+</body>
+</html>
